@@ -1,0 +1,5 @@
+name: Elasticsearch Cluster 6.2.3
+description: |
+  Elasticsearch stack (single volume)
+version: 6.2.3-rancher1
+category: ELK
