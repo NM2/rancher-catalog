@@ -28,7 +28,7 @@ services:
   awxweb:
     scale: 1
     health_check:
-      port: 8052
+      port: ${public_port}
       interval: 5000
       unhealthy_threshold: 3
       request_line: ''

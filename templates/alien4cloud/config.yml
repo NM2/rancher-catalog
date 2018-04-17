@@ -1,0 +1,6 @@
+name: "Alien4Cloud"
+description: |
+  Alien4Cloud Stack
+version: 1.3.0-rancher0
+category: Network Management
+maintainer: dedonato@nm-2.com

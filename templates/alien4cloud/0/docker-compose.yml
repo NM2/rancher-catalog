@@ -1,0 +1,7 @@
+version: '2'
+services:
+  alien4cloud:
+    image: "antillion/alien4cloud-docker:1.3.0"
+    ports:
+      - ${public_port}:8088
+

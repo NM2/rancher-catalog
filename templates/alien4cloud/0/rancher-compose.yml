@@ -1,0 +1,26 @@
+version: '2'
+catalog:
+  name: "Ansible AWX"
+  version: "1.0.5-rancher0"
+  description: |
+    Ansible AWX
+  uuid: ansible-awx-0
+  questions:
+    - variable: "public_port"
+      label: "Public Port"
+      description: "The public port that Alien4Cloud listens on, defaults to 8088"
+      required: true
+      default: 8088
+      type: "int"
+
+services:
+  alien4cloud:
+    scale: 1
+    health_check:
+      port: ${public_port}
+      interval: 5000
+      unhealthy_threshold: 3
+      request_line: ''
+      healthy_threshold: 2
+      response_timeout: 5000
+
