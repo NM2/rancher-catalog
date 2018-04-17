@@ -1,0 +1,6 @@
+name: "Ansible AWX"
+description: |
+  Ansible AWX Stack
+version: 1.0.5-rancher0
+category: Network Management
+maintainer: dedonato@nm-2.com

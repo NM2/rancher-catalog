@@ -1,0 +1,62 @@
+version: '2'
+catalog:
+  name: "Ansible AWX"
+  version: "1.0.5-rancher0"
+  description: |
+    Ansible AWX
+  uuid: ansible-awx-0
+  questions:
+    - variable: "public_port"
+      label: "Public Port"
+      description: "The public port that AWX listens on, defaults to 8052"
+      required: true
+      default: 8052
+      type: "int"
+
+services:
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 5000
+      unhealthy_threshold: 3
+      request_line: ''
+      healthy_threshold: 2
+      response_timeout: 5000
+
+
+  awxweb:
+    scale: 1
+    health_check:
+      port: 8052
+      interval: 5000
+      unhealthy_threshold: 3
+      request_line: ''
+      healthy_threshold: 2
+      response_timeout: 5000
+
+  awxtask:
+    scale: 1
+
+  rabbitmq:
+    scale: 1
+    health_check:
+      port: 5672
+      interval: 5000
+      unhealthy_threshold: 3
+      request_line: ''
+      healthy_threshold: 2
+      response_timeout: 5000
+
+
+  postgres:
+    scale: 1
+    health_check:
+      port: 5432
+      interval: 5000
+      unhealthy_threshold: 3
+      request_line: ''
+      healthy_threshold: 2
+      response_timeout: 5000
+
+
