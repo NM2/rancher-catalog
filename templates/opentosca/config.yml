@@ -1,0 +1,5 @@
+name: "OpenTOSCA"
+description: |
+  OpenTOSCA Stack
+version: 0.3.0-rancher0
+category: Cloud Orchestration

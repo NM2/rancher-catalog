@@ -1,0 +1,32 @@
+version: '2'
+catalog:
+  name: "OpenTOSCA"
+  version: "0.3.0-rancher0"
+  description: |
+    OpenTOSCA Stack
+  uuid: opentosca-0
+
+services:
+  container:
+    scale: 1
+    start_on_create: true
+  container-repository:
+    scale: 1
+    start_on_create: true
+  dind:
+    scale: 1
+    start_on_create: true
+  ui:
+    scale: 1
+    start_on_create: true
+  engine-plan:
+    scale: 1
+    start_on_create: true
+  winery:
+    scale: 1
+    start_on_create: true
+  engine-ia:
+    scale: 1
+    start_on_create: true
+
+
