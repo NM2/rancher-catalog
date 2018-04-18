@@ -1,0 +1,6 @@
+name: "HAProxy"
+description: |
+  Ingress HA Proxy Stack
+version: 1.0-rancher0
+category: Network Service
+maintainer: dedonato@nm-2.com

@@ -1,0 +1,38 @@
+version: '2'
+catalog:
+  name: "HA Proxy"
+  version: "1.0-rancher0"
+  description: |
+    Ingress HA Proxy Stack
+  uuid: ha-proxy-0
+  questions:
+    - variable: "ingress_domain"
+      label: "Ingress Domain"
+      description: "The domain used to resolve VirtualHosts"
+      required: true
+      default: ""
+      type: "string"
+
+services:
+  IngressProxy:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      certs: []
+      port_rules:
+      - backend_name: ''
+        hostname: www.${ingress_domain}
+        path: ''
+        priority: 1
+        protocol: http
+        service: rancher-server
+        source_port: 80
+        target_port: 8080
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      reinitializing_timeout: 60000
