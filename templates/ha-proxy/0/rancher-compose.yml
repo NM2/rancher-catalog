@@ -25,7 +25,7 @@ services:
         path: ''
         priority: 1
         protocol: http
-        service: rancher-server
+        service: os/rancher-server
         source_port: 80
         target_port: 8080
     health_check:
