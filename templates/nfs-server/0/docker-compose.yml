@@ -1,0 +1,11 @@
+version: '2'
+services:
+  nfs-server:
+    image: "erichough/nfs-server:latest"
+    privileged: true
+    network_mode: "host"
+    environment:
+      - NFS_EXPORT_0: '${nfs_export_line}'
+    volumes:
+      - /opt:/nfs
+

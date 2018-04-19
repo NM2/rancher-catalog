@@ -1,0 +1,27 @@
+version: '2'
+catalog:
+  name: "NFS Server"
+  version: "debian-stable-rancher0"
+  description: |
+    NFS Server Stack
+  uuid: nfs-server-0
+  questions:
+    - variable: "nfs_export_line"
+      label: "NFS export line"
+      description: "The NFS export config line"
+      required: true
+      default: "/nfs 10.42.0.0/16(rw,no_subtree_check)"
+      type: "string"
+
+services:
+  nfs-server:
+    scale: 1
+    health_check:
+      port: 2049
+      interval: 5000
+      unhealthy_threshold: 3
+      request_line: ''
+      healthy_threshold: 2
+      response_timeout: 5000
+      strategy: none
+

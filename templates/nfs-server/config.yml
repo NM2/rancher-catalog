@@ -1,0 +1,6 @@
+name: "NFS Server"
+description: |
+  NFS Server Stack
+version: debian-stable-rancher0
+category: Network Services
+maintainer: dedonato@nm-2.com
