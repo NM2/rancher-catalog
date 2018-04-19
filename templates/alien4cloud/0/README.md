@@ -9,4 +9,4 @@
  Default login credentials:
 
  - User: admin
- - Password: jKy?CMF3q$ycrqEKmZRQ
+ - Password: admin
