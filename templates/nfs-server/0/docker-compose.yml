@@ -5,7 +5,7 @@ services:
     privileged: true
     network_mode: "host"
     environment:
-      - NFS_EXPORT_0: '${nfs_export_line}'
+      - NFS_EXPORT_0: "${nfs_export_line}"
     volumes:
       - /opt:/nfs
     labels:
