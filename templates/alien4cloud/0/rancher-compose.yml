@@ -1,10 +1,10 @@
 version: '2'
 catalog:
-  name: "Ansible AWX"
-  version: "1.0.5-rancher0"
+  name: "Alien4Cloud"
+  version: "1.4.3.1-rancher0"
   description: |
-    Ansible AWX
-  uuid: ansible-awx-0
+    Alien4Cloud Stack
+  uuid: alien4cloud-0
   questions:
     - variable: "public_port"
       label: "Public Port"
