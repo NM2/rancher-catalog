@@ -8,4 +8,6 @@ services:
       - NFS_EXPORT_0: '${nfs_export_line}'
     volumes:
       - /opt:/nfs
-
+    labels:
+      io.rancher.scheduler.affinity:host_label: ingress=true
+      ingress: 'true'
