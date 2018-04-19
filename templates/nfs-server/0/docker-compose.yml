@@ -5,9 +5,9 @@ services:
     privileged: true
     network_mode: "host"
     environment:
-      - NFS_EXPORT_0: "${nfs_export_line}"
+      - NFS_EXPORT_0=${nfs_export_line}
     volumes:
-      - /opt:/nfs
+      - /media:/media
     labels:
       io.rancher.scheduler.affinity:host_label: ingress=true
       ingress: 'true'

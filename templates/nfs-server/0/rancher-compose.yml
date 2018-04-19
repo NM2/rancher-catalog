@@ -10,7 +10,7 @@ catalog:
       label: "NFS export line"
       description: "The NFS export config line"
       required: true
-      default: "/nfs 10.42.0.0/16(rw,no_subtree_check)"
+      default: "/media 10.42.0.0/16(rw,no_subtree_check)"
       type: "string"
 
 services:
