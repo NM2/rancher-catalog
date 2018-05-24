@@ -20,7 +20,7 @@ database:
   labels:
     io.rancher.sidekicks: setup-get-db-script, database-data
 setup-get-db-script:
-  image: glyptodon/guacamole:0.9.10-incubating
+  image: guacamole/guacamole:0.9.14
   net: none
   volumes_from:
     - database-data
@@ -31,9 +31,9 @@ setup-get-db-script:
   labels:
     io.rancher.container.start_once: 'true'
 guacd:
-  image: glyptodon/guacd:0.9.10-incubating
+  image: guacamole/guacd:0.9.14
 guacamole:
-  image: glyptodon/guacamole:0.9.10-incubating
+  image: guacamole/guacamole:0.9.14
   environment:
     MYSQL_DATABASE: ${guacamole_db}
     MYSQL_HOSTNAME: database
