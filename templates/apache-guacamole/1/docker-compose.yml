@@ -1,49 +1,48 @@
-database-data:
-  image: busybox
-  labels:
-    io.rancher.container.start_once: 'true'
-  net: none
-  entrypoint: /bin/true
-  volumes:
-    - /var/lib/mysql
-    - /docker-entrypoint-initdb.d
-database:
-  image: mariadb
-  environment:
-    MYSQL_DATABASE: ${guacamole_db}
-    MYSQL_ONETIME_PASSWORD: 'true'
-    MYSQL_PASSWORD: ${guacamole_password}
-    MYSQL_RANDOM_ROOT_PASSWORD: 'true'
-    MYSQL_USER: ${guacamole_user}
-  volumes_from:
-    - database-data
-  labels:
-    io.rancher.sidekicks: setup-get-db-script, database-data
-setup-get-db-script:
-  image: guacamole/guacamole:0.9.14
-  net: none
-  volumes_from:
-    - database-data
-  command:
-  - bash
-  - -c
-  - /opt/guacamole/bin/initdb.sh --mysql > /docker-entrypoint-initdb.d/initdb.sql
-  labels:
-    io.rancher.container.start_once: 'true'
-guacd:
-  image: guacamole/guacd:0.9.14
-guacamole:
-  image: guacamole/guacamole:0.9.14
-  environment:
-    MYSQL_DATABASE: ${guacamole_db}
-    MYSQL_HOSTNAME: database
-    MYSQL_PASSWORD: ${guacamole_password}
-    MYSQL_USER: ${guacamole_user}
-  links:
-   - guacd:guacd
-  ports:
-    - ${public_port}:8080/tcp
-  command:
-    - /bin/bash
-    - -c
-    - cd /usr/local/tomcat/webapps;rm -rf ROOT/; ln -s guacamole.war ROOT.war; /opt/guacamole/bin/start.sh;
+version: '2'
+
+services:
+  init-guac-db:
+    image: guacamole/guacamole:0.9.14
+    command: ["/bin/sh", "-c", "test -e /init/initdb.sql && echo 'init file already exists' || /opt/guacamole/bin/initdb.sh --postgres > /init/initdb.sql" ]
+    volumes:
+      - dbinit:/init
+    labels:
+      io.rancher.container.start_once: 'true'
+
+  postgres:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - dbinit:/docker-entrypoint-initdb.d
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${guacamole_db}
+      POSTGRES_USER: ${guacamole_db_user}
+      POSTGRES_PASSWORD: ${guacamole_db_password}
+    depends_on:
+      - init-guac-db
+
+  guacd:
+    image: guacamole/guacd:0.9.14
+    restart: unless-stopped
+
+  guac:
+    image: guacamole/guacamole:0.9.14
+    restart: unless-stopped
+    environment:
+      GUACD_HOSTNAME: guacd
+      POSTGRES_HOSTNAME: postgres
+      POSTGRES_DATABASE: ${guacamole_db}
+      POSTGRES_USER: ${guacamole_db_user}
+      POSTGRES_PASSWORD: ${guacamole_db_password}
+    links:
+     - guacd:guacd
+    ports:
+      - ${public_port}:8080/tcp
+
+volumes:
+  dbinit:
+    driver: rancher-nfs
+  dbdata:
+    driver: rancher-nfs
+
