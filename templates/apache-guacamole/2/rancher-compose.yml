@@ -1,0 +1,89 @@
+version: '2'
+
+services:
+
+  guacamole-client:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/guacamole" "HTTP/1.0"
+      reinitializing_timeout: 60000
+
+  guacamole-server:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 4822
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+
+  init-guac-db:
+    scale: 1
+
+  init-postgres-db:
+    scale: 1
+
+.catalog:
+  name: "apache-guacamole"
+  version: "0.3-rancher1"
+  description: "Apache Guacamole is a clientless remote desktop gateway. It supports standard protocols like VNC, RDP, and SSH. The stack supports external postgres DB"
+  minimum_rancher_version: v0.46.0
+  questions:
+    - variable: "postgres_host"
+      label: "Postgres Service"
+      description: "Postgres service container"
+      default: "postgres/postgres"
+      required: true
+      type: "service"
+    - variable: "postgres_port"
+      label: "Postgres Service Port"
+      description: "Postgres service TCP port"
+      default: "5432"
+      required: true
+      type: "int"
+    - variable: "postgres_user"
+      label: "Postgres administrator user"
+      description: "Password for postgres user with admin priviledges"
+      default: "postgres"
+      required: true
+      type: "string"
+    - variable: "postgres_password"
+      label: "Postgres administrator password"
+      description: "Password for postgres user with admin priviledges"
+      default: "postgres_password"
+      required: true
+      type: "string"
+    - variable: "guacamole_db"
+      label: "Guacamole Database Name"
+      description: "Your guacamole database name"
+      default: "guacamole_db"
+      required: true
+      type: "string"
+    - variable: "guacamole_db_user"
+      label: "Guacamole Database User"
+      description: "Your guacamole DB user name"
+      required: true
+      default: "guacamole_db_user"
+      type: "string"
+    - variable: "guacamole_db_password"
+      label: "Guacamole Database Password"
+      description: "Your guacamole DB password"
+      required: true
+      default: "guacamole_db_password"
+      type: "password"
+    - variable: "public_port"
+      label: "Public Port"
+      description: "The public port that Guacamole listens on, defaults to 8080"
+      required: true
+      default: 8080
+      type: "int"
