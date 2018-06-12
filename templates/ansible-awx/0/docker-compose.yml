@@ -17,7 +17,7 @@ services:
     image: "memcached:alpine"
 
   awxweb:
-    image: "ansible/awx_web:latest"
+    image: "nm2srl/awx_web:latest"
     links:
       - rabbitmq
       - memcached
