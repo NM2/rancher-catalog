@@ -41,10 +41,10 @@ services:
   questions:
     - variable: "postgres_host"
       label: "Postgres Service"
-      description: "Postgres service container"
-      default: "postgres/postgres"
+      description: "Postgres service hostname (<service_name>.<stack_name>)"
+      default: "postgres.postgres"
       required: true
-      type: "service"
+      type: "string"
     - variable: "postgres_port"
       label: "Postgres Service Port"
       description: "Postgres service TCP port"

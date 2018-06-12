@@ -4,9 +4,9 @@ services:
   # Create SQL scripts for configuring remote PostgresDB
   init-guac-db:
     image: guacamole/guacamole:0.9.14
-    command: ["/bin/sh", "-c", "echo 'CREATE USER ${guacamole_db_user} WITH PASSWORD '${guacamole_db_password}';\n' > /init/createdb.sql &&
-                                echo 'CREATE DATABASE ${guacamole_db};\n' >> /init/createdb.sql &&
-                                echo 'GRANT ALL PRIVILEGES ON DATABASE ${guacamole_db} TO ${guacamole_db_user};\n' >> /init/createdb.sql &&
+    command: ["/bin/sh", "-c", "echo \"CREATE USER ${guacamole_db_user} WITH PASSWORD '${guacamole_db_password}';\" > /init/createdb.sql &&
+                                echo \"CREATE DATABASE ${guacamole_db};\" >> /init/createdb.sql &&
+                                echo \"GRANT ALL PRIVILEGES ON DATABASE ${guacamole_db} TO ${guacamole_db_user};\" >> /init/createdb.sql &&
                                 /opt/guacamole/bin/initdb.sh --postgres > /init/initdb.sql" ]
     volumes:
       - dbinit:/init
@@ -18,15 +18,13 @@ services:
     image: postgres:9.6-alpine
     volumes:
       - dbinit:/init
-    command: ["/bin/sh", "-c", "echo postgres:${postgres_port}:*:${postgres_user}:${postgres_password} > ~/.pgpass &&
-                                echo postgres:${postgres_port}:${guacamole_db}:${guacamole_db_user}:${guacamole_db_password} > ~/.pgpass &&
+    command: ["/bin/sh", "-c", "echo ${postgres_host}:${postgres_port}:*:${postgres_user}:${postgres_password} > ~/.pgpass &&
+                                echo ${postgres_host}:${postgres_port}:${guacamole_db}:${guacamole_db_user}:${guacamole_db_password} >> ~/.pgpass &&
                                 chmod 600 ~/.pgpass &&
-                                psql -h postgres -p ${postgres_port} -U postgres < /init/createdb.sql &&
-                                psql -h postgres -p ${postgres_port} -U ${guacamole_db_user} -d ${guacamole_db} < /init/initdb.sql" ]
+                                psql -h ${postgres_host} -p ${postgres_port} -w -U ${postgres_user} < /init/createdb.sql &&
+                                psql -h ${postgres_host} -p ${postgres_port} -w -U ${guacamole_db_user} -d ${guacamole_db} < /init/initdb.sql" ]
     depends_on:
       - init-guac-db
-    external_links:
-      - ${postgres_host}:postgres
     labels:
       io.rancher.container.start_once: 'true'
 
@@ -39,15 +37,13 @@ services:
     restart: unless-stopped
     environment:
       GUACD_HOSTNAME: guacamole-server
-      POSTGRES_HOSTNAME: postgres
+      POSTGRES_HOSTNAME: ${postgres_host}
       POSTGRES_PORT: ${postgres_port}
       POSTGRES_DATABASE: ${guacamole_db}
       POSTGRES_USER: ${guacamole_db_user}
       POSTGRES_PASSWORD: ${guacamole_db_password}
     ports:
       - ${public_port}:8080/tcp
-    external_links:
-      - ${postgres_host}:postgres
     depends_on:
       - init-postgres-db
 

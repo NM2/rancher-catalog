@@ -15,5 +15,5 @@ The default login will be `guacadmin/guacadmin`.
 
 This stack exposes Guacamole on port 8080 by default. You can use it as it is, or map a load balancer to it and not expose the port.
 
-Once all containers are running, Guacamole is available on `http://[container_ip]:8080/`.
+Once all containers are running, Guacamole is available on `http://[container_ip]:8080/guacamole/`.
 If the page is blank, try refreshing the page after 5-10 seconds, since the database container might still be initializing.
